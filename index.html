@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Smart Resource Allocation System using Greedy and Dynamic Programming algorithms.">
+  <title>Allocare — Smart Resource Allocation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><span class="brand-mark">A</span><span>allocare<small>RESOURCE OPTIMIZER</small></span></div>
+      <div class="side-label">WORKSPACE</div>
+      <button class="nav-item active" type="button"><span>▦</span> Overview</button>
+      <button class="nav-item" id="navResources" type="button"><span>◫</span> Resources</button>
+      <button class="nav-item" id="navAnalysis" type="button"><span>⌁</span> Algorithm analysis</button>
+      <div class="sidebar-bottom">
+        <div class="side-note"><span class="pulse"></span><div><strong>Offline-ready</strong><small>Runs in your browser</small></div></div>
+        <p>DAA MINI PROJECT<br>0/1 KNAPSACK OPTIMIZATION</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><div class="eyebrow">OPTIMIZATION WORKSPACE</div><h1>Smart Resource Allocation</h1><p class="subtitle">Make every unit of your budget count.</p></div>
+        <div class="topbar-right"><span class="status-dot"></span><span>Local session</span><button class="btn btn-quiet" id="resetAll">↻ Reset demo</button></div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy"><span class="pill">DESIGN & ANALYSIS OF ALGORITHMS</span><h2>Allocate smarter.<br><em>Achieve more.</em></h2><p>Choose the best combination of resources under a fixed budget. Compare a fast Greedy heuristic with an optimal Dynamic Programming solution.</p><div class="hero-actions"><button class="btn btn-primary" id="runBoth">Run optimization <span>→</span></button><button class="btn btn-outline" id="loadSample">Load sample data</button></div></div>
+        <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="orb orb-main">↗</div><div class="orb orb-small orb-a">+</div><div class="orb orb-small orb-b">✓</div><div class="visual-caption"><span class="visual-line"></span><span>VALUE / COST</span><strong>Optimized allocation</strong></div></div>
+      </section>
+
+      <section class="metrics" aria-label="Summary statistics">
+        <article class="metric-card"><div class="metric-top"><span>Total resources</span><span class="metric-icon">▤</span></div><strong id="metricCount">5</strong><small>Available to allocate</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Budget capacity</span><span class="metric-icon">$</span></div><strong id="metricBudget">₹50,000</strong><small>Maximum spending limit</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Optimal value</span><span class="metric-icon">↗</span></div><strong id="metricValue">—</strong><small>Dynamic Programming result</small></article>
+        <article class="metric-card"><div class="metric-top"><span>Budget utilization</span><span class="metric-icon">◔</span></div><strong id="metricUtil">—</strong><small>Of available budget used</small></article>
+      </section>
+
+      <section class="content-grid" id="resourcesSection">
+        <article class="panel resources-panel">
+          <div class="panel-heading"><div><div class="eyebrow">INPUT</div><h3>Resource inventory</h3><p>Add resources and assign a cost and value score.</p></div><button class="btn btn-small btn-outline" id="addResource">＋ Add resource</button></div>
+          <div class="budget-control"><label for="budgetInput">Available budget <span>MAX CAPACITY</span></label><div class="budget-input-wrap"><span>₹</span><input id="budgetInput" type="number" min="1" step="1" value="50000"><button id="applyBudget" class="btn btn-small btn-dark">Apply</button></div><input id="budgetRange" type="range" min="5000" max="150000" step="1000" value="50000"><div class="range-labels"><span>₹5,000</span><span>₹1,50,000</span></div></div>
+          <div class="table-wrap"><table><thead><tr><th>RESOURCE</th><th>COST (₹)</th><th>VALUE SCORE</th><th></th></tr></thead><tbody id="resourceRows"></tbody></table></div>
+          <div class="inventory-footer"><span id="inventorySummary">5 resources listed</span><button class="text-button" id="clearResources">Clear all</button></div>
+        </article>
+
+        <article class="panel algorithm-panel" id="analysisSection">
+          <div class="panel-heading"><div><div class="eyebrow">ALGORITHM CONFIGURATION</div><h3>Optimization method</h3><p>Compare speed against solution quality.</p></div><span class="algorithm-badge">DAA</span></div>
+          <label class="algorithm-option"><input type="radio" name="algorithm" value="both" checked><span class="radio-custom"></span><span class="algo-text"><strong>Compare both</strong><small>Greedy vs. Dynamic Programming</small></span><span class="algo-tag">Recommended</span></label>
+          <label class="algorithm-option"><input type="radio" name="algorithm" value="greedy"><span class="radio-custom"></span><span class="algo-text"><strong>Greedy approach</strong><small>Sort by value-to-cost ratio</small></span></label>
+          <label class="algorithm-option"><input type="radio" name="algorithm" value="dp"><span class="radio-custom"></span><span class="algo-text"><strong>Dynamic Programming</strong><small>Find the optimal 0/1 selection</small></span></label>
+          <div class="method-note"><span>ⓘ</span><p><strong>Important:</strong> Greedy is a heuristic for 0/1 Knapsack and may not produce the optimal combination. Dynamic Programming does.</p></div>
+          <button class="btn btn-primary btn-full" id="runSelected">Run selected method <span>→</span></button>
+        </article>
+      </section>
+
+      <section class="panel results-panel" id="resultsSection">
+        <div class="panel-heading results-heading"><div><div class="eyebrow">OUTPUT</div><h3>Allocation results</h3><p id="resultSub">Run an algorithm to see the recommended allocation.</p></div><button class="btn btn-small btn-outline" id="exportCsv">↓ Export results CSV</button></div>
+        <div class="empty-state" id="emptyState"><div class="empty-icon">⌁</div><strong>Your results will appear here</strong><span>Run optimization to calculate the best resource combination.</span></div>
+        <div id="resultsContent" class="results-content hidden">
+          <div class="result-cards" id="resultCards"></div>
+          <div class="comparison-grid"><div class="comparison-box"><div class="chart-heading"><div><strong>Value comparison</strong><small>Total value score by algorithm</small></div><span class="chart-legend"><i class="legend-greedy"></i> Greedy <i class="legend-dp"></i> DP</span></div><div id="valueChart" class="bar-chart"></div></div><div class="comparison-box"><div class="chart-heading"><div><strong>Selected resources</strong><small>Included in each solution</small></div></div><div id="selectedLists" class="selected-lists"></div></div></div>
+          <div class="table-wrap comparison-table-wrap"><table><thead><tr><th>METRIC</th><th>GREEDY</th><th>DYNAMIC PROGRAMMING</th></tr></thead><tbody id="comparisonRows"></tbody></table></div>
+          <div class="insight" id="insightBox"></div>
+        </div>
+      </section>
+
+      <section class="panel theory-panel">
+        <div class="panel-heading"><div><div class="eyebrow">THEORY CORNER</div><h3>Know your algorithms</h3><p>Complexity at a glance for your DAA report and viva.</p></div></div>
+        <div class="theory-grid">
+          <div class="theory-card"><div class="theory-symbol greedy-symbol">G</div><div><h4>Greedy algorithm</h4><p>Ranks resources by value-to-cost ratio and selects each resource if it fits the remaining budget.</p><div class="complexity"><span>Time</span><code>O(n log n)</code><span>Space</span><code>O(n)</code></div></div></div>
+          <div class="theory-card"><div class="theory-symbol dp-symbol">DP</div><div><h4>Dynamic Programming</h4><p>Builds an optimal value table for each resource and each capacity, then backtracks to recover the selection.</p><div class="complexity"><span>Time</span><code>O(nB)</code><span>Space</span><code>O(nB)</code></div></div></div>
+        </div>
+        <p class="footnote">B is the integer budget in scaled units. Dynamic Programming is pseudo-polynomial; this demo scales ₹ costs into budget units to keep computation practical.</p>
+      </section>
+      <footer>ALLOCARE · SMART RESOURCE ALLOCATION SYSTEM <span>Built for Design & Analysis of Algorithms</span></footer>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="script.js"></script>
+</body>
+</html>
